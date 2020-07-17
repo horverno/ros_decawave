@@ -74,13 +74,15 @@ class DecawaveDriver(object):
                 self.ser.flushInput()
                 return None
         version = self.ser.read(21)
+        ''' # TODO replace with other unpack method
         data_ = struct.unpack('<BBBBBLBBLBBL', bytearray(version))
         rospy.loginfo("\33[96m--------------------------------\33[0m")
         rospy.loginfo("\33[96mFirmware Version:0x"+format(data_[5], '04X')+"\33[0m")
         rospy.loginfo("\33[96mConfiguration Version:0x"+format(data_[8], '04X')+"\33[0m")
         rospy.loginfo("\33[96mHardware Version:0x"+format(data_[11], '04X')+"\33[0m")
         rospy.loginfo("\33[96m--------------------------------\33[0m")
-        
+        '''
+
     def get_tag_acc(self):
         # Acc is not implemented on Generic Mode
         self.ser.flushInput()
@@ -121,14 +123,15 @@ class DecawaveDriver(object):
                 self.ser.flushInput()
                 return None
         data_ = self.ser.read(21)
+        ''' # TODO replace with other unpack method
         data_ = struct.unpack('<BBBBBlllBBBB', bytearray(data_))
         self.tag.x = float(data_[5])/1000.0
         self.tag.y = float(data_[6])/1000.0
         self.tag.z = float(data_[7])/1000.0
         self.tag.qf = float(data_[8])/100.0
         self.tag.n_anchors = int(data_[11])
+        '''
         self.tag.header.frame_id = self.tag_name_
-
         self.anchor_packet_size = 20 ## Size of anchor packet in bytes
         now = rospy.Time.now()
         while (self.ser.inWaiting() < self.anchor_packet_size * self.tag.n_anchors):
@@ -138,7 +141,7 @@ class DecawaveDriver(object):
                 return None
         self.anchors.anchors = [] ## Clean Anchors list
         for i in range(self.tag.n_anchors):
-
+            ''' # TODO replace with other unpack method
             data_ = self.ser.read(self.anchor_packet_size)
             data_ = struct.unpack('<HlBlllB', bytearray(data_))
             a = Anchor()
@@ -151,7 +154,7 @@ class DecawaveDriver(object):
             a.z = float(data_[5])/1000.0
             a.qf = float(data_[6])/100.0
             self.anchors.anchors.append(a)
-
+            '''
 
     def tf_callback(self, timer):
         if self.tf_publisher_ == "True":
