@@ -5,9 +5,9 @@ Positioning System based on Decawave's DWM1001 Ultra Wide Band transceivers.
 
 ### Python Dependencies
 ```
-$ pip install serial
-$ pip install struct
+$ pip install pyserial
 ```
+~~`$ pip install struct` 404, cannot install~~
 
 ### ROS Dependencies
 ```

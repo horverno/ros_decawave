@@ -5,7 +5,7 @@ import tf
 import time
 
 import serial
-import struct
+#import struct # cannot pip install
 
 from geometry_msgs.msg import PointStamped
 from ros_decawave.msg import Tag, Anchor, AnchorArray, Acc
@@ -96,6 +96,7 @@ class DecawaveDriver(object):
         while(self.ser.inWaiting()==0):
             pass
         status = self.ser.readline()
+        ''' # TODO replace with other unpack method
         data_ = struct.unpack('<BBBBBB', bytearray(status))
         if data_[0] != 64 and data_[2] != 0:
             rospy.logwarn("Get Status Failed! Packet does not match!")
@@ -108,7 +109,7 @@ class DecawaveDriver(object):
             rospy.logwarn("Tag is NOT CONNECTED to a UWB network but LOCATION data are READY!")
         elif data_[5] == 0:
             rospy.logwarn("Tag is NOT CONNECTED to a UWB network and LOCATION data are NOT READY!")
-
+        ''' 
 
     def get_tag_location(self):
         self.ser.flushInput()
